@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-module.exports = (userService) => {
+const UserService = require('../../services/UserService');
+
+module.exports = (config) => {
+  const userService = new UserService(config.postgres.client);
 
   router.get('/', async (req, res) => {
     try{

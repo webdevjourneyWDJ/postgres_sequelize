@@ -4,14 +4,14 @@ const router = express.Router();
 const todosRoute = require('./todos');
 const usersRoute = require('./users');
 
-module.exports = (params) => {
+module.exports = (config) => {
 
   router.get('/', (req, res) => {
     res.send('Home Page');
   });
 
-  router.use('/todo', todosRoute(params.todoService));
-  router.use('/user', usersRoute(params.userService));
+  router.use('/todo', todosRoute(config));
+  router.use('/user', usersRoute(config));
 
   return router;
 };
