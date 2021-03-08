@@ -73,7 +73,7 @@ class UserService {
 
   async deleteUser(){
     try {
-      const user = await this.models.User.destroy({where: {firstName: 'test'}});
+      const user = await this.models.User.restore({where: {firstName: 'test SET'}});
       return "deleted User";
     } catch (err) {
       return err;

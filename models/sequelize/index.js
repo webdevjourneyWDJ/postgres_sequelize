@@ -40,7 +40,8 @@ module.exports = (sequelize) => {
     tableName: "Employees",
     timestamps:true,
     createdAt: false,
-    updatedAt: 'updateTimeStamp'
+    updatedAt: 'updateTimeStamp',
+    paranoid: true
   });
 
   sequelize.sync({alter: true}); //force: true
