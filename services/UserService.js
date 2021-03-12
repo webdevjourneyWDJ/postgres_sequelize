@@ -8,13 +8,12 @@ class UserService {
     this.models = sequelize.models;
   }
 
-  async createUser({firstName, lastName, email, password}){
+  async createUser({firstName, lastName, email}){
     try{
       const user = await this.models.User.create({
         firstName,
         lastName,
-        email,
-        password
+        email
       });
 
       return user
@@ -37,7 +36,7 @@ class UserService {
 
   async findOneUser(){
     try {
-      const user = await this.models.User.findOne({where: {firstName: 'tom'}});
+      const user = await this.models.User.findOne({where: {firstName: 'wdj'}});
       return user;
     } catch (err) {
       return err;
@@ -73,8 +72,19 @@ class UserService {
 
   async deleteUser(){
     try {
-      const user = await this.models.User.restore({where: {firstName: 'test SET'}});
+      const user = await this.models.User.destroy({where: {firstName: 'wdj'}});
       return "deleted User";
+    } catch (err) {
+      return err;
+    }
+  }
+
+  async followUser(){
+    try {
+      const currentUser = await this.findOneUser();
+      const toFollowUser = await this.models.User.findOne({where: {firstName: 'tom'}});
+      currentUser.addUser(toFollowUser);
+      return currentUser.getUser();
     } catch (err) {
       return err;
     }

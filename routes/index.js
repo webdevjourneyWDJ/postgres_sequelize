@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const todosRoute = require('./todos');
 const usersRoute = require('./users');
+const tweetsRoute = require('./tweets');
 
 module.exports = (config) => {
 
@@ -10,8 +10,8 @@ module.exports = (config) => {
     res.send('Home Page');
   });
 
-  router.use('/todo', todosRoute(config));
   router.use('/user', usersRoute(config));
+  router.use('/tweet', tweetsRoute(config));
 
   return router;
 };

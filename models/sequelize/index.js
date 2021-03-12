@@ -11,13 +11,6 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true,
       defaultValue: 'John',
-      get() {
-        const rawValue = this.getDataValue('firstName');
-        return rawValue ? rawValue.toUpperCase() : null;
-      },
-      set(value){
-        this.setDataValue('firstName', `${value} SET`);
-      }
     },
     lastName: {
       type: DataTypes.STRING,
@@ -27,22 +20,67 @@ module.exports = (sequelize) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false
+    }
+  },{
+    timestamps:true,
+  });
+
+  const ContactInfo = sequelize.define('ContactInfo', {
+    id:{
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
     },
-    password: {
+    phone: {
       type: DataTypes.STRING,
-      allowNull: false,
-      set(value){
-        this.setDataValue('password', `hashed(${value})`);
-      }
+      allowNull: false
+    }
+  },{
+    freezeTableName: true,
+    timestamps:true,
+  });
+
+  const Tweet = sequelize.define('Tweet', {
+    id:{
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
+    },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false
     },
   },{
-    // freezeTableName: true
-    tableName: "Employees",
     timestamps:true,
-    createdAt: false,
-    updatedAt: 'updateTimeStamp',
-    paranoid: true
   });
+
+  //hasOne, belognsTo, hasMany, belongsToMany
+
+  //one-to-one => hasOne, belognsTo
+  User.hasOne(ContactInfo, {
+    foriegnKey: {
+      type: DataTypes.UUID,
+      allowNull: false
+    }
+  });
+  ContactInfo.belongsTo(User);
+
+  //one-to-many => hasMany, belognsTo
+  User.hasMany(Tweet, {
+    foriegnKey: {
+      type: DataTypes.UUID,
+      allowNull: false
+    }
+  });
+  Tweet.belongsTo(User);
+
+  //many-to-many => belongsToMany
+  User.belongsToMany(User, {as: "User", foreignKey: "UserId", through: "Follow"});
+  User.belongsToMany(User, {as: "Followed", foreignKey: "FollowedId", through: "Follow"});
 
   sequelize.sync({alter: true}); //force: true
 }
