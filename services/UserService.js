@@ -45,7 +45,19 @@ class UserService {
 
   async getAllUsers(){
     try {
-      const users = await this.models.User.findAll();
+      const users = await this.models.User.findAll({
+        include: [
+          {
+            model: this.models.ContactInfo,
+            attributes: {exclude: ['updatedAt', 'createdAt', 'UserId']}
+          },
+          {
+            model: this.models.Tweet,
+            attributes: {exclude: ['updatedAt', 'UserId']}
+          }
+        ], 
+        attributes: {exclude: ['updatedAt', 'createdAt']}
+      });
       return users;
     } catch (err) {
       return err;

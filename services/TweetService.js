@@ -22,6 +22,21 @@ class TweetService {
     }
   }
 
+  async getAllTweets(){
+    try{
+      const allTweets = await this.models.Tweet.findAll({
+        include: {
+          model: this.models.User,
+          attributes: {exclude: ['updatedAt', 'createdAt']}
+        }, 
+        attributes: {exclude: ['updatedAt', 'UserId']}
+      });
+      return allTweets
+    }catch(err){
+      return err;
+    }
+  }
+
 }
 
 module.exports = TweetService;

@@ -18,5 +18,14 @@ module.exports = (config) => {
     }
   });
 
+  router.get('/all', async (req, res, next) => {
+    try{
+      const tweetList = await tweetService.getAllTweets();
+      res.send(tweetList);
+    }catch(err){
+      return next(err);
+    }
+  });
+
   return router;
 };
